@@ -1,0 +1,856 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+	background-image: url('/dollars.jpg');
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	min-height: 100vh;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+
+::selection {
+  background-color: #444444; /* Change to your preferred highlight color */
+  color: #ffffff;            /* Change text color within selection */
+}
+
+#model-viewer{
+  position: fixed;
+  top: 0;
+  left:   calc(22% + 44rem + 64px);
+  height: 100%;
+  width: 44rem;
+}
+
+#model-viewer2{
+  display: none;
+}
+
+#viewport{
+  
+  overflow: hidden;
+}
+
+#maincontentbounder{
+  background-color: white;
+  position: absolute;
+  width: 44rem;
+  left: 22%;
+  border-left: 32px solid black;
+  border-right: 32px solid black;
+  overflow: hidden;
+  z-index: 1;
+
+  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
+}
+#maincontent{
+  background-image: url("/microbesback_ponzi.png");
+  padding: 0rem ;
+  padding-top: 3rem;
+}
+
+
+
+#ponzi{
+  text-align: center;
+  font-size: 4rem; 
+  font-style: italic;
+}
+
+#ca{
+  padding: 1rem;
+  text-align: center;
+  font-size: smaller;
+  color: rgb(36, 0, 8);
+}
+
+#ponziimg1{
+  border: 2px black solid;}
+#ponziimg{
+  
+  border: 2px black solid;
+}
+#ponzicontainer{
+  text-align: center;
+  padding-bottom: -1rem;
+}
+hr{
+  width: 0rem;
+}
+p{
+  padding: 1rem 4rem;
+}
+ul{
+  padding: 0rem 5rem;
+  
+}
+
+
+#topdeco{
+  position: fixed;
+  top: 0;
+  height: 1rem;
+  width: 44rem;
+ background-color: black; 
+}
+#botdeco{
+  position: fixed;
+  bottom: 0;
+  height: 1rem;
+  width: 44rem;
+ background-color: black; 
+}
+
+footer{
+  color: white;
+  background: black;
+  padding: 2rem 0rem;
+  padding-bottom: 4rem;
+}
+footer ::selection {
+  background-color: #ffffff00; /* Change to your preferred highlight color */
+  color: #f04a4a;            /* Change text color within selection */
+}
+nav ::selection {
+  background-color: #ffffff00; /* Change to your preferred highlight color */
+  color: #f04a4a;            /* Change text color within selection */
+}
+
+
+
+
+#menu2{
+ 
+  background-color: black;
+  position: fixed;
+  color: white;
+  width: 44rem;
+  /* text-align: center;
+  height: 2rem;
+  bottom: 0;
+  padding-top:0.5rem ; */
+
+    bottom: 0;
+    display: flex;
+justify-content: space-evenly; /* Horizontal spacing between items */
+align-items: center;            /* Vertical centering */
+height: 2rem;      
+}
+#menu2 a{
+  padding: 10px;
+  text-decoration: none;
+  color: white;
+}
+
+nav{
+  background-color: black;
+  position: fixed;
+  color: white;
+  width: 44rem;
+  text-align: center;
+  height: 2rem;
+
+  display: flex;
+  justify-content: space-evenly; /* Horizontal spacing between items */
+  align-items: center;    
+}
+nav a{
+  color: white;
+}
+
+#topdeco{
+  display: none;
+}
+#botdeco{
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 0px; /* Chrome, Safari, and newer Edge */
+  height: 0px;
+}
+
+footer p a{
+  color: white;
+}
+
+
+
+
+@media (max-aspect-ratio: 1/1) {
+
+  #model-viewer{
+    display: none;
+  }
+  #model-viewer2{
+   display: block;
+   width: 100%;
+   height: 77vw;
+   z-index: 0;
+  }
+  #ponziimg1{
+    display: none;
+  }
+
+  #viewport{
+    background-color: red;
+    height: 77vh;
+    width: 100vw;
+  }
+  
+  #maincontentbounder{
+    background-color: black;
+
+    position: absolute;
+    height: 100%;
+    width: 100% ;
+    left: 0;
+    overflow: scroll;
+    border: 0px white solid;
+  }
+
+  nav{
+    z-index: 9999;
+    background-color: black;
+    position: fixed;
+    color: white;
+    width: 100%;
+    text-align: center;
+    height: 2rem;
+
+    display: flex;
+    justify-content: space-evenly; /* Horizontal spacing between items */
+    align-items: center;    
+  }
+  nav a{
+    color: white;
+  }
+
+  #menu2{
+    background-color: black;
+    position: fixed;
+    color: white;
+    width: 100%;
+    /* text-align: center;
+    height: 2rem;
+    bottom: 0;
+    padding-top:0.5rem ; */
+
+      bottom: 0;
+      display: flex;
+  justify-content: space-evenly; /* Horizontal spacing between items */
+  align-items: center;            /* Vertical centering */
+  height: 2rem;      
+  }
+  #menu2 a{
+    padding: 10px;
+    text-decoration: none;
+  }
+
+  
+  #maincontent{
+    padding: 1rem;
+    padding-top: 4rem;
+    /* background-image: url("/microbesback_ponzi.png"); */
+    background-color: white;
+  }
+
+
+
+
+#topdeco{
+  position: fixed;
+  top: 2rem;
+  height: 0.3444rem;
+  width: 100%;
+  background-color: black;
+}
+#botdeco{
+  position: fixed;
+  bottom: 0;
+  height: 0.3444rem;
+  width: 100%;
+
+  background-color: black;
+}
+
+#leftdeco{
+  position: fixed;
+  left: 0;
+  height: 100%;
+  width: 0.3444rem;
+
+  background-color: black;
+}
+
+
+#rightdeco{
+  position: fixed;
+  right: 0;
+  height: 100%;
+  width: 0.3444rem;
+
+  background-color: black;
+}
+
+p{
+  padding: 1rem 0rem;
+}
+ul{
+  padding: 0rem 1rem;
+}
+
+footer{
+  color: white;
+  background: black;
+  padding: 2rem 2rem;
+  padding-bottom: 4rem;
+}
+
+.supply-chart {
+  height: 200px !important;
+  margin: 0.5rem 0 !important;
+  padding: 0.5rem !important;
+}
+
+.burn-simulator {
+  margin: 1rem auto !important;
+  padding: 1rem !important;
+}
+
+.current-supply {
+  font-size: 1.2em !important;
+}
+
+.era-jumps {
+  gap: 0.25rem !important;
+}
+
+.era-btn {
+  padding: 0.2rem 0.4rem !important;
+  font-size: 0.8em !important;
+}
+
+}
+
+.mechanism-intro {
+  margin: 2rem 0;
+}
+
+.sales-pitch {
+  font-size: 1.3em;
+  font-style: italic;
+  color: #ffd700;
+  margin-bottom: 2rem;
+}
+
+.mechanism-box {
+  border: 2px solid #ffd700;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  background: rgba(0,0,0,0.7);
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+.feature-list li {
+  margin: 0.8rem 0;
+  font-size: 1.1em;
+}
+
+.highlight {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.emphasis {
+  color: #ffd700;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.quote-slim {
+  background: rgba(0,0,0,0.5);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-left: 4px solid #ffd700;
+  font-style: italic;
+}
+
+.quote-slim p {
+  font-size: 1.1em;
+  margin: 0 0 0.5rem 0;
+}
+
+.quote-author {
+  font-size: 0.9em;
+  color: #ffd700;
+}
+
+.mouse-wisdom {
+  background: rgba(0,0,0,0.7);
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid #ffd700;
+}
+
+.wealth-manifesto {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.boesky-quote {
+  font-size: 2.5em;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255,215,0,0.5);
+}
+
+.supply-timeline {
+  margin: 4rem auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.supply-timeline h3 {
+  text-align: center;
+  color: #ffd700;
+  margin-bottom: 3rem;
+  font-size: 1.5em;
+}
+
+.timeline-container {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #ffd700;
+}
+
+.timeline-entry {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-left: 2rem;
+  cursor: pointer;
+}
+
+.timeline-entry .marker {
+  position: absolute;
+  left: -2px;
+  width: 4px;
+  height: 4px;
+  background: #000;
+  border: 1px solid #ffd700;
+  transform: translateX(-50%);
+}
+
+.timeline-entry .year {
+  color: #fff;
+  font-size: 0.9em;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-entry .supply {
+  color: #ffd700;
+  font-family: monospace;
+  font-size: 1.2em;
+}
+
+.timeline-entry:hover .marker {
+  background: #ffd700;
+}
+
+.timeline-entry:hover .supply {
+  text-decoration: underline;
+}
+
+.burn-simulator {
+  margin: 4rem auto;
+  max-width: 800px;
+  background: #000;
+  border: 1px solid #ffd700;
+  padding: 2rem;
+}
+
+.supply-chart {
+  height: 300px;
+  margin-bottom: 2rem;
+  position: relative;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  padding: 1rem;
+}
+
+.supply-display {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.current-supply {
+  font-family: monospace;
+  font-size: 2em;
+  color: #ffd700;
+}
+
+.year-display {
+  font-size: 1.2em;
+  color: #fff;
+  margin-top: 0.5rem;
+}
+
+.burn-controls {
+  margin-top: 2rem;
+}
+
+.burn-slider input {
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.burn-button button {
+  width: 100%;
+  padding: 1rem;
+  background: #000;
+  border: 1px solid #ffd700;
+  color: #ffd700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.burn-button button:hover {
+  background: #ffd700;
+  color: #000;
+}
+
+.burn-slider input[type="range"] {
+  width: 100%;
+  height: 10px;
+  -webkit-appearance: none;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+.burn-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #ffd700;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.burn-slider input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #ffd700;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.input-controls {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border: 1px solid #ffd700;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.input-group {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.input-group label {
+  color: #ffd700;
+  min-width: 120px;
+}
+
+.input-group input {
+  background: #000;
+  border: 1px solid #ffd700;
+  color: #fff;
+  padding: 0.5rem;
+  width: 200px;
+}
+
+#updateGraph {
+  background: #000;
+  border: 1px solid #ffd700;
+  color: #ffd700;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+#updateGraph:hover {
+  background: #ffd700;
+  color: #000;
+}
+
+.chart-controls {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.control-btn {
+  background: #000;
+  border: 1px solid #ffd700;
+  color: #ffd700;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  min-width: 100px;
+}
+
+.control-btn:hover {
+  background: #ffd700;
+  color: #000;
+}
+
+.era-jumps {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.era-btn {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #ffd700;
+  color: #ffd700;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.era-btn:hover {
+  background: #ffd700;
+  color: #000;
+}
+
+.sparkle {
+    pointer-events: none;
+    position: absolute;
+    z-index: 999;
+}
+
+.wealth-calculator {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #ffd700;
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 800px;
+}
+
+.wealth-calculator h3 {
+  text-align: center;
+  color: #ffd700;
+  font-size: 1.8em;
+  margin-bottom: 1.5rem;
+}
+
+.calculator-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.input-group label {
+  color: #ffd700;
+  min-width: 150px;
+}
+
+.input-group input {
+  background: #000;
+  border: 1px solid #ffd700;
+  color: #ffd700;
+  padding: 0.5rem;
+  font-size: 1.1em;
+}
+
+#calculateWealth {
+  background: #ffd700;
+  color: #000;
+  border: none;
+  padding: 1rem;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#calculateWealth:hover {
+  background: #fff;
+  transform: scale(1.02);
+}
+
+.wealth-amount {
+  font-size: 2.5em;
+  color: #ffd700;
+  text-align: center;
+  margin: 1rem 0;
+  font-family: monospace;
+}
+
+.wealth-disclaimer {
+  color: #666;
+  font-size: 0.8em;
+  text-align: center;
+  font-style: italic;
+}
+
+.testimonials-carousel {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #ffd700;
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 800px;
+}
+
+.testimonials-carousel h3 {
+  text-align: center;
+  color: #ffd700;
+  font-size: 1.8em;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-container {
+  position: relative;
+  height: 100px;
+}
+
+.testimonial {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  color: #fff;
+  font-size: 1.2em;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.testimonial.active {
+  opacity: 1;
+}
+
+.testimonial-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #333;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: #ffd700;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .wealth-calculator, .testimonials-carousel {
+    margin: 1rem;
+    padding: 1rem;
+  }
+  
+  .input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .input-group label {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Add a semi-transparent overlay to improve readability */
+#viewport::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+  z-index: 0;
+}
+
+/* Ensure content stays above the overlay */
+#maincontentbounder {
+  position: relative;
+  z-index: 1;
+}
