@@ -1,0 +1,17 @@
+{
+    "routes": [
+      {
+        "src": "/.*",
+        "dest": "/index.html",
+        "headers": {
+          "Cache-Control": "no-cache, no-store, must-revalidate"
+        }
+      },
+      {
+        "src": "/(.*\\.js)",
+        "headers": {
+          "Content-Type": "application/javascript"
+        }
+      }
+    ]
+  }
