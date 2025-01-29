@@ -582,23 +582,42 @@ function initializeMugshotGenerator() {
   });
 
   async function fetchTwitterImage() {
-      const handle = twitterInput.value.trim();
-      if (handle) {
-          try {
-              const response = await fetch(`https://unavatar.io/twitter/${handle}`);
-              if (response.ok) {
-                  const blob = await response.blob();
-                  processUploadedImage(blob);
-              } else {
-                  alert('Could not fetch Twitter profile picture. Make sure the handle is correct.');
-              }
-          } catch (error) {
-              console.error('Error fetching Twitter avatar:', error);
-              alert('Error fetching Twitter profile picture. Try uploading an image instead.');
-          }
-      }
-  }
+    const handle = twitterInput.value.trim();
+    if (handle) {
+        try {
+            fetchTwitterBtn.textContent = 'Loading...';
+            fetchTwitterBtn.disabled = true;
 
+            // Using twivatar as an alternative service
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = `https://images.weserv.nl/?url=https://unavatar.io/twitter/${handle}`;
+            
+            img.onload = function() {
+                // Convert image to blob
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                
+                canvas.toBlob((blob) => {
+                    processUploadedImage(blob);
+                });
+            };
+
+            img.onerror = function() {
+                alert('Could not fetch Twitter profile picture. Make sure the handle is correct or try uploading an image.');
+            };
+        } catch (error) {
+            console.error('Error fetching Twitter avatar:', error);
+            alert('Could not fetch Twitter profile picture. Make sure the handle is correct or try uploading an image.');
+        } finally {
+            fetchTwitterBtn.textContent = 'Fetch';
+            fetchTwitterBtn.disabled = false;
+        }
+    }
+}
   // Handle download
   downloadBtn.addEventListener('click', () => {
       const link = document.createElement('a');
