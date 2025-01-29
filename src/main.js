@@ -627,58 +627,63 @@ function initializeMugshotGenerator() {
   });
 
   function processUploadedImage(file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-              // Clear canvas
-              ctx.clearRect(0, 0, canvas.width, canvas.height);
-              
-              // Black background
-              ctx.fillStyle = '#000000';
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-              
-              // Calculate image sizing to maintain aspect ratio
-              const scale = Math.max(
-                  canvas.width / img.width,
-                  (canvas.height - 100) / img.height
-              );
-              
-              // Center the image
-              const newWidth = img.width * scale;
-              const newHeight = img.height * scale;
-              const x = (canvas.width - newWidth) / 2;
-              const y = ((canvas.height - 100) - newHeight) / 2 + 50; // 50px down from top
-              
-              // Draw grayscale image
-              ctx.filter = 'grayscale(100%) contrast(1.2)';
-              ctx.drawImage(img, x, y, newWidth, newHeight);
-              ctx.filter = 'none';
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Black background
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Calculate image sizing to maintain aspect ratio
+            const scale = Math.max(
+                canvas.width / img.width,
+                (canvas.height - 100) / img.height
+            );
+            
+            // Center the image
+            const newWidth = img.width * scale;
+            const newHeight = img.height * scale;
+            const x = (canvas.width - newWidth) / 2;
+            const y = ((canvas.height - 100) - newHeight) / 2 + 50; // 50px down from top
+            
+            // Draw grayscale image
+            ctx.filter = 'grayscale(100%) contrast(1.2)';
+            ctx.drawImage(img, x, y, newWidth, newHeight);
+            ctx.filter = 'none';
 
-              // Draw department header
-              ctx.fillStyle = '#FFFFFF';
-              ctx.font = 'bold 24px monospace';
-              ctx.textAlign = 'center';
-              ctx.fillText('$PONZI DEPT.', canvas.width/2, 30);
+            // Draw prison bars
+            ctx.drawImage(barsOverlay, 0, 0, canvas.width, canvas.height);
 
-              // Draw booking number
-              const bookingNum = String(Math.floor(Math.random() * 900000) + 100000);
-              ctx.font = 'bold 20px monospace';
-              ctx.fillText(bookingNum, canvas.width/2, 60);
+            // Draw department header - now after the bars
+            // Black background for header text to stand out
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, 70);
 
-              // Draw prison bars
-              ctx.drawImage(barsOverlay, 0, 0, canvas.width, canvas.height);
-              
-              // Hide upload overlay
-              document.querySelector('.preview-overlay').style.display = 'none';
+            // Draw the text
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 24px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('$PONZI DEPT.', canvas.width/2, 30);
 
-              // Add name and crime text
-              updateText();
-          };
-          img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-  }
+            // Draw booking number
+            const bookingNum = String(Math.floor(Math.random() * 900000) + 100000);
+            ctx.font = 'bold 20px monospace';
+            ctx.fillText(bookingNum, canvas.width/2, 60);
+            
+            // Hide upload overlay
+            document.querySelector('.preview-overlay').style.display = 'none';
+
+            // Add name and crime text
+            updateText();
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
 
   function updateText() {
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
