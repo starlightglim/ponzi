@@ -492,4 +492,216 @@ document.addEventListener('DOMContentLoaded', function() {
 
   initializeWealthCalculator();
   initializeTestimonials();
+  initializeMugshotGenerator();
 });
+function initializeMugshotGenerator() {
+  const mugshotSection = document.createElement('div');
+  mugshotSection.className = 'mugshot-generator';
+  mugshotSection.innerHTML = `
+      <h2>🚨 $PONZI MUGSHOT 🚨</h2>
+      <div class="mugshot-container">
+          <div class="mugshot-preview">
+              <canvas id="mugshotCanvas"></canvas>
+              <div class="preview-overlay">Drop image here or click to upload</div>
+          </div>
+          <div class="mugshot-controls">
+              <div class="control-group">
+                  <div class="twitter-input-group">
+                      <input type="text" id="twitterHandle" class="ponzi-input" placeholder="Enter Twitter handle (without @)">
+                      <button id="fetchTwitter" class="twitter-btn">Fetch</button>
+                  </div>
+                  <input type="file" id="fileInput" style="display: none" accept="image/*">
+              </div>
+              <div class="control-group">
+                  <input type="text" id="suspectName" class="ponzi-input" placeholder="SUSPECT NAME">
+                  <input type="text" id="crimeCaption" class="caption-input" placeholder="CRIME">
+              </div>
+              <button id="downloadMugshot" class="download-btn">SAVE EVIDENCE</button>
+          </div>
+      </div>
+  `;
+
+  const wealthManifesto = document.querySelector('.wealth-manifesto');
+  wealthManifesto.parentNode.insertBefore(mugshotSection, wealthManifesto);
+
+  // Initialize elements
+  const canvas = document.getElementById('mugshotCanvas');
+  const ctx = canvas.getContext('2d');
+  const fileInput = document.getElementById('fileInput');
+  const preview = document.querySelector('.mugshot-preview');
+  const twitterInput = document.getElementById('twitterHandle');
+  const fetchTwitterBtn = document.getElementById('fetchTwitter');
+  const suspectName = document.getElementById('suspectName');
+  const crimeCaption = document.getElementById('crimeCaption');
+  const downloadBtn = document.getElementById('downloadMugshot');
+
+  // Set canvas dimensions
+  canvas.width = 400;
+  canvas.height = 400;
+
+  // Load prison bars overlay
+  const barsOverlay = new Image();
+  barsOverlay.src = '/prison-bars.png';
+
+  // Handle drag and drop
+  preview.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      preview.classList.add('drag-active');
+  });
+
+  preview.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      preview.classList.remove('drag-active');
+  });
+
+  preview.addEventListener('drop', (e) => {
+      e.preventDefault();
+      preview.classList.remove('drag-active');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+          processUploadedImage(file);
+      }
+  });
+
+  // Handle click to upload
+  preview.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', (e) => {
+      if (e.target.files[0]) {
+          processUploadedImage(e.target.files[0]);
+      }
+  });
+
+  // Handle Twitter fetch button click
+  fetchTwitterBtn.addEventListener('click', fetchTwitterImage);
+  
+  // Also fetch when Enter is pressed in the input
+  twitterInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+          fetchTwitterImage();
+      }
+  });
+
+  async function fetchTwitterImage() {
+      const handle = twitterInput.value.trim();
+      if (handle) {
+          try {
+              const response = await fetch(`https://unavatar.io/twitter/${handle}`);
+              if (response.ok) {
+                  const blob = await response.blob();
+                  processUploadedImage(blob);
+              } else {
+                  alert('Could not fetch Twitter profile picture. Make sure the handle is correct.');
+              }
+          } catch (error) {
+              console.error('Error fetching Twitter avatar:', error);
+              alert('Error fetching Twitter profile picture. Try uploading an image instead.');
+          }
+      }
+  }
+
+  // Handle download
+  downloadBtn.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'ponzi-mugshot.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+  });
+
+  function processUploadedImage(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+              // Clear canvas
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              
+              // Black background
+              ctx.fillStyle = '#000000';
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              
+              // Calculate image sizing to maintain aspect ratio
+              const scale = Math.max(
+                  canvas.width / img.width,
+                  (canvas.height - 100) / img.height
+              );
+              
+              // Center the image
+              const newWidth = img.width * scale;
+              const newHeight = img.height * scale;
+              const x = (canvas.width - newWidth) / 2;
+              const y = ((canvas.height - 100) - newHeight) / 2 + 50; // 50px down from top
+              
+              // Draw grayscale image
+              ctx.filter = 'grayscale(100%) contrast(1.2)';
+              ctx.drawImage(img, x, y, newWidth, newHeight);
+              ctx.filter = 'none';
+
+              // Draw department header
+              ctx.fillStyle = '#FFFFFF';
+              ctx.font = 'bold 24px monospace';
+              ctx.textAlign = 'center';
+              ctx.fillText('$PONZI DEPT.', canvas.width/2, 30);
+
+              // Draw booking number
+              const bookingNum = String(Math.floor(Math.random() * 900000) + 100000);
+              ctx.font = 'bold 20px monospace';
+              ctx.fillText(bookingNum, canvas.width/2, 60);
+
+              // Draw prison bars
+              ctx.drawImage(barsOverlay, 0, 0, canvas.width, canvas.height);
+              
+              // Hide upload overlay
+              document.querySelector('.preview-overlay').style.display = 'none';
+
+              // Add name and crime text
+              updateText();
+          };
+          img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+  }
+
+  function updateText() {
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      ctx.putImageData(imageData, 0, 0);
+      
+      const nameText = suspectName.value.trim();
+      const crimeText = crimeCaption.value.trim();
+      
+      // Draw name
+      if (nameText) {
+          // White background for name
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(20, canvas.height - 80, canvas.width - 40, 30);
+          
+          ctx.fillStyle = '#000000';
+          ctx.font = '12px monospace';
+          ctx.textAlign = 'left';
+          ctx.fillText('NAME', 25, canvas.height - 60);
+          
+          ctx.font = 'bold 20px monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(nameText.toUpperCase(), canvas.width/2, canvas.height - 60);
+      }
+      
+      // Draw crime
+      if (crimeText) {
+          // White background for crime
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(20, canvas.height - 40, canvas.width - 40, 30);
+          
+          ctx.fillStyle = '#000000';
+          ctx.font = '12px monospace';
+          ctx.textAlign = 'left';
+          ctx.fillText('CRIME', 25, canvas.height - 20);
+          
+          ctx.font = 'bold 20px monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(crimeText.toUpperCase(), canvas.width/2, canvas.height - 20);
+      }
+  }
+
+  // Update text when inputs change
+  suspectName.addEventListener('input', updateText);
+  crimeCaption.addEventListener('input', updateText);
+}
