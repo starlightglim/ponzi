@@ -977,22 +977,80 @@ footer{
   }
 }
 .twitter-input-group {
-  display: flex;
-  gap: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 .twitter-btn {
-  background: #ffd700;
-  color: #000;
-  border: none;
-  padding: 0.8rem 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: monospace;
-  white-space: nowrap;
+    background: #ffd700;
+    color: #000;
+    border: none;
+    padding: 0.8rem 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: monospace;
+    white-space: nowrap;
 }
 
 .twitter-btn:hover {
-  background: #fff;
+    background: #fff;
+}
+/* Reset viewport behavior */
+html, body {
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+#viewport {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  html, body {
+    position: static;
+    overflow: auto;
+    height: auto;
+  }
+
+  #viewport {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+  
+  #maincontentbounder {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  #maincontent {
+    padding-top: 4rem;
+    padding-bottom: 4rem; /* Add space for bottom menu */
+  }
+
+  /* Fix menu positions */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+
+  #menu2 {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
 }
