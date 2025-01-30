@@ -996,26 +996,27 @@ footer{
 .twitter-btn:hover {
     background: #fff;
 }
-/* Reset viewport behavior */
+/* Default PC styles - keep scrolling working */
 html, body {
-  height: 100%;
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
+  min-height: 100vh;
 }
 
 #viewport {
-  height: 100%;
-  width: 100%;
   overflow: hidden;
-  position: fixed;
 }
 
+#maincontentbounder {
+  position: absolute;
+  width: 44rem;
+  left: 22%;
+  overflow: hidden;
+}
+
+/* Mobile-specific fixes */
 @media (max-aspect-ratio: 1/1) {
   html, body {
-    position: static;
-    overflow: auto;
-    height: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 
   #viewport {
@@ -1028,13 +1029,15 @@ html, body {
   #maincontentbounder {
     position: relative;
     height: auto;
-    min-height: 100vh;
+    width: 100%;
+    left: 0;
     overflow: visible;
   }
 
   #maincontent {
     padding-top: 4rem;
-    padding-bottom: 4rem; /* Add space for bottom menu */
+    padding-bottom: 4rem;
+    min-height: calc(100vh - 8rem); /* Account for top and bottom menus */
   }
 
   /* Fix menu positions */
