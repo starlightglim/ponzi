@@ -6,11 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const ctx = document.getElementById('supplyChart');
 
   let supplyPoints = [
-    { year: 2024, supply: 1000000000, value: 0.0000001 },
-    { year: 2099, supply: 100000000, value: 0.01 },
-    { year: 2675, supply: 1000000, value: 100 },
-    { year: 4287, supply: 1000, value: 1000000 },
-    { year: 32672, supply: 1, value: 1000000000000 }
+    { year: 2024, supply: 100000000000, value: 0.0000001 },  // 100 billion
+    { year: 2099, supply: 1000000000, value: 0.01 },         // 1 billion
+    { year: 2675, supply: 1000000, value: 100 },             // 1 million
+    { year: 4287, supply: 1000, value: 1000000 },            // 1 thousand
+    { year: 32672, supply: 1, value: 1000000000000 }         // 1 token
   ];
 
   let chart;
@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const value = getValueAtYear(year);
             const point = { year, supply, value };
             
-            // Only add point if it's different from the last one
             if (!lastPoint || 
                 lastPoint.supply !== point.supply || 
                 lastPoint.value !== point.value) {
@@ -114,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 size: window.innerWidth < 768 ? 8 : 12
               },
               callback: function(value) {
+                if (value === 100000000000) return '100B $PONZI';
                 if (value === 1000000000) return '1B $PONZI';
                 if (value === 100000000) return '100M $PONZI';
                 if (value === 1000000) return '1M $PONZI';
@@ -171,6 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   0.01,
                   0.005,
                   0.001,
+                  0.0000001,     // Added for initial price
                   0
                 ];
                 
@@ -242,6 +243,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const datasetLabel = context.dataset.label;
                 const value = context.raw;
                 if (datasetLabel === 'Token Supply') {
+                  if (value >= 1000000000) {
+                    return `Supply: ${(value/1000000000).toFixed(1)}B $PONZI`;
+                  } else if (value >= 1000000) {
+                    return `Supply: ${(value/1000000).toFixed(1)}M $PONZI`;
+                  } else if (value >= 1000) {
+                    return `Supply: ${(value/1000).toFixed(1)}K $PONZI`;
+                  }
                   return `Supply: ${value.toLocaleString()} $PONZI`;
                 } else {
                   if (value >= 1000000000000) return `Price: $${(value/1000000000000).toFixed(2)}T`;
@@ -263,16 +271,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const allPoints = generateDataPoints();
     const visiblePoints = allPoints.filter(point => point.year <= year);
     
-    // Update datasets with progressive visibility
-    chart.data.labels = visiblePoints.map(point => point.year); // Only show years up to current point
+    chart.data.labels = visiblePoints.map(point => point.year);
     chart.data.datasets[0].data = visiblePoints.map(point => point.supply);
     chart.data.datasets[1].data = visiblePoints.map(point => point.value);
     
-    // Update x-axis max dynamically
     const nextMilestone = Math.min(year + 1000, 32672);
     chart.options.scales.x.max = nextMilestone;
     
-    // Update y1 (value) axis max dynamically based on current maximum value
     const currentMaxValue = Math.max(...visiblePoints.map(p => p.value));
     const nextValueMilestone = Math.min(currentMaxValue * 100, 1000000000000);
     chart.options.scales.y1.max = nextValueMilestone;
@@ -309,46 +314,59 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateDisplay(year) {
     const supply = getSupplyAtYear(year);
     const value = getValueAtYear(year);
+    let supplyDisplay;
     let valueDisplay;
     
-    if (value >= 1000000000000) {
-        valueDisplay = value.toLocaleString();
-    } else if (value >= 1) {
-        valueDisplay = value.toLocaleString();
+    // Format supply display
+    if (supply >= 1000000000) {
+      supplyDisplay = `${(supply/1000000000).toFixed(1)}B`;
+    } else if (supply >= 1000000) {
+      supplyDisplay = `${(supply/1000000).toFixed(1)}M`;
+    } else if (supply >= 1000) {
+      supplyDisplay = `${(supply/1000).toFixed(1)}K`;
     } else {
-        valueDisplay = value.toFixed(7);
+      supplyDisplay = supply.toString();
+    }
+    
+    // Format value display
+    if (value >= 1000000000000) {
+      valueDisplay = `$${(value/1000000000000).toFixed(2)}T`;
+    } else if (value >= 1000000000) {
+      valueDisplay = `$${(value/1000000000).toFixed(2)}B`;
+    } else if (value >= 1000000) {
+      valueDisplay = `$${(value/1000000).toFixed(2)}M`;
+    } else if (value >= 1) {
+      valueDisplay = `$${value.toFixed(2)}`;
+    } else {
+      valueDisplay = `$${value.toFixed(7)}`;
     }
 
     currentSupply.innerHTML = `
-        Token Supply: ${supply.toLocaleString()} $PONZI<br>
-        Price Per Token: $${valueDisplay}<br>
+        Token Supply: ${supplyDisplay} $PONZI<br>
+        Price Per Token: ${valueDisplay}<br>
         Year: ${year}
     `;
     yearDisplay.style.display = 'none';
   }
 
-  // Add this function to handle stopping autoplay when using slider or burn button
   function stopAllAnimations() {
     isSimulating = false;
     burnButton.disabled = false;
     burnButton.innerHTML = 'INITIATE BURN SEQUENCE';
   }
 
-  // Modify the slider event listener to stop autoplay when manually sliding
   slider.addEventListener('input', () => {
     const year = parseInt(slider.value);
     updateDisplay(year);
     updateChartToYear(year);
   });
 
-  // Update the burn button event listener
   burnButton.addEventListener('click', async () => {
     if (isSimulating) {
         stopAllAnimations();
         return;
     }
 
-    // If we're at the end, reset to start
     if (parseInt(slider.value) >= 32672) {
         slider.value = 2024;
         updateDisplay(2024);
